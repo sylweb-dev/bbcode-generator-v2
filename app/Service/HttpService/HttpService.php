@@ -6,7 +6,11 @@ class HttpService
     private string $api_key;
     private \Symfony\Component\HttpClient\ScopingHttpClient $client;
 
-    const API_URL = 'https://imdb-api.com/fr/API/Search/';
+//    const API_URL = 'https://imdb-api.com/fr/API/Search/';
+
+// https://api.themoviedb.org/3/search/multi?api_key=f8dd28041079edd365311590712b3dfc&language=fr-FR&query=teen%20wolf&page=1&include_adult=true
+
+    const API_URL = 'https://api.themoviedb.org/3/';
     const METHODS = ['get', 'post', 'put', 'patch', 'delete'];
 
     /**
@@ -30,7 +34,20 @@ class HttpService
         }
     }
 
-    public function search(string $toSearch): HttpResponse
+    public function search(string $toSearch, string $type = "multi", int|string $page = 1): HttpResponse
+    {
+        $response = new HttpResponse();
+
+        $req = $this->client->request(
+            'GET',
+            self::API_URL . "search/{$type}?api_key={$this->api_key}&language=fr-FR&query={$toSearch}&page={$page}&include_adult=true",
+            []
+        );
+
+        return $this->fillResponse($req);
+    }
+
+    public function find(string $toSearch): HttpResponse
     {
         $response = new HttpResponse();
 
@@ -42,6 +59,8 @@ class HttpService
 
         return $this->fillResponse($req);
     }
+
+
 
 
     /**
