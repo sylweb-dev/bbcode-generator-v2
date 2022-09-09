@@ -47,19 +47,23 @@
                             $release = null;
                             $title = null;
                             $class = null;
+                            $url = null;
                             if($viewData['data_url']['type'] == "tv"){
                                 $title = $data->original_name;
                                 $release = $data->first_air_date;
                                 $class = "border-info";
+                                $url = $viewData['router']->get()->generate('main-generate-tv', ['id' => $data->id]);
                             }
                             if($viewData['data_url']['type'] == "movie"){
                                 $title = $data->original_title;
                                 $release = $data->release_date;
                                 $class = "border-success";
+                                $url = $viewData['router']->get()->generate('main-generate-movie', ['id' => $data->id]);
                             }
                             if($viewData['data_url']['type'] == "multi"){
                                 $title = $data->media_type == "tv" ? $data->original_name : $data->original_title;
                                 $release = $data->media_type == "tv" ? $data->first_air_date : ($data->release_date ?? "N/A");
+                                $url = $viewData['router']->get()->generate("main-generate-{$data->media_type}", ['id' => $data->id]);
                             }
                             ?>
                             <div class="card h-100 <?= $class ?>">
@@ -67,8 +71,10 @@
                                      class="card-img-top img-fluid "
                                      style="width: 100%; height: 450px !important; object-fit: cover;" alt="">
                                 <div class="card-body">
-                                    <h5 class="card-title"><a
-                                                href="<?= $viewData['router']->get()->generate('main-generate', ['id' => $data->id]) ?>"><?= $title ?></a>
+                                    <h5 class="card-title">
+                                        <a href="<?= $url ?>">
+                                            <?= $title ?>
+                                        </a>
                                     </h5>
                                     <h6 class="card-subtitle text-muted"><?= $release ?></h6>
                                 </div>

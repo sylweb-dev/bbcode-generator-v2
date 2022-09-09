@@ -31,12 +31,23 @@ class Router {
         //? Generate Page
         $this->router->map(
             'GET',
-            '/generate/[:id]',
+            '/generate-tv/[:id]',
             [
                 'controller' => 'MainController',
-                'method' => 'generate',
+                'method' => 'generate_tv',
             ],
-            'main-generate'
+            'main-generate-tv'
+        );
+
+        //? Generate Page
+        $this->router->map(
+            'GET',
+            '/generate-movie/[:id]',
+            [
+                'controller' => 'MainController',
+                'method' => 'generate_movie',
+            ],
+            'main-generate-movie'
         );
     }
 

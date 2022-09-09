@@ -47,20 +47,31 @@ class HttpService
         return $this->fillResponse($req);
     }
 
-    public function find(string $toSearch): HttpResponse
+    public function find(string $id, string $type = "multi"): HttpResponse
     {
         $response = new HttpResponse();
 
         $req = $this->client->request(
             'GET',
-            self::API_URL . $this->api_key . '/' . $toSearch,
+            self::API_URL . "{$type}/{$id}?api_key={$this->api_key}&language=fr-FR",
             []
         );
 
         return $this->fillResponse($req);
     }
 
+    public function credits(string $id, string $type = "tv"): HttpResponse
+    {
+        $response = new HttpResponse();
 
+        $req = $this->client->request(
+            'GET',
+            self::API_URL . "{$type}/{$id}/aggregate_credits?api_key={$this->api_key}&language=fr-FR",
+            []
+        );
+
+        return $this->fillResponse($req);
+    }
 
 
     /**

@@ -41,9 +41,47 @@ class MainController extends CoreController {
         $this->show('pages/home', $arguments);
     }
 
-    public function generate($arguments = [])
+    public function generate_tv($arguments = [])
     {
+        if(isset($arguments['id'])) {
+            $id = $arguments['id'];
 
+            $rs = new RatingService();
+            $cs = new ConvertionService();
+            $hs = new HttpService($_ENV['KEY_IMDB_API']);
+
+            $req = $hs->find($id, "tv");
+            $data = $req->getData();
+
+            $cast = json_decode(json_encode($hs->credits($id)->getData()->cast), true);
+            setlocale(LC_TIME, "fr_FR");
+            $release_date = new DateTime($data->first_air_date);
+            //usort($cast, fn($a, $b) => $a['order'] <=> $b['order']);
+
+            $countryResult = "";
+            for ($i = 0; $i < sizeof($data->origin_country); $i++) {
+                if($i < sizeof($data->origin_country)) {
+                    $countryResult .= "{$data->origin_country[$i]}";
+                } else {
+                    $countryResult .= "{$data->origin_country[$i]}, ";
+                }
+            }
+
+            $arguments['tv'] = $data;
+            $arguments['generator'] = [
+                "rating" => [
+                    "image" => $rs->getStars($data->vote_average),
+                    "note" => $data->vote_average,
+                ],
+                "casts" => array_slice($cast, 0, 4),
+                "release" => $release_date,
+                "countries" => $countryResult,
+                "run_time" => $cs->timeToString($data->episode_run_time[0]),
+                "type" => "tv"
+            ];
+        }
+
+        dump($arguments);
         $this->show('pages/generate', $arguments);
     }
 
