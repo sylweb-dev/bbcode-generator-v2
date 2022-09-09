@@ -38,7 +38,7 @@ class MainController extends CoreController {
             ];
         }
 
-        $this->show('pages/home', $arguments);
+        $this->show('pages/search', $arguments);
     }
 
     public function generate_tv($arguments = [])
