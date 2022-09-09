@@ -4,7 +4,7 @@
     <?php require_once __DIR__ . './../global/head.tpl.php' ?>
     <title>RapidPlace - Accueil</title>
 </head>
-<body>
+<body class="mb-5">
 <?php require_once __DIR__ . './../global/nav.tpl.php' ?>
 
 <section class="my-3 container" id="find">
@@ -25,13 +25,17 @@
 </section>
 
 <section class="my-3 container" id="list">
-    <div class="card bg-secondary my-3" id="establishment">
+    <div class="card bg-light my-3" id="establishment">
         <div class="row">
-            <div class="bg-primary w-100 text-center">
-                <div class="row bg-primary justify-content-center align-items-center py-5">
+            <div class="bg-light w-100 text-center">
+
+                <div class="row bg-light justify-content-center align-items-center py-5">
                     <div class="col-xl-5 col-lg-6 col-md-7 col-11 mt-1 text-left">
                         <div class="pl-xl-4 pl-lg-3 pl-md-2">
-                            <div class="display-4 font-weight-light mb-4 text-white"><?= $viewData['tv']->name ?></div>
+                            <div class="display-4 font-weight-lighttext-white"><?= $viewData['tv']->name ?></div>
+                            <div class="mb-4">
+                                <?php foreach ($viewData['tv']->genres as $genre) echo '<span class="badge badge-pill badge-dark mr-2">' . $genre->name . '</span>'; ?>
+                            </div>
 
                             <div class="text-justify mb-4">
                                 <font size="2" color="#999999"><?= $viewData['tv']->overview ?></font>
@@ -39,18 +43,19 @@
 
                             <div class="row justify-content-center text-center mb-4">
                                 <?php
-                                foreach ($viewData['generator']['casts'] as $perso) echo '<div class="col-6 col-sm-3 mb-3 px-2"><img src="https://image.tmdb.org/t/p/w154' . $perso['profile_path'] . '" alt="" class="rounded img-fluid"></div>'
+                                foreach ($viewData['generator']['casts'] as $perso)
+                                    echo '<div class="col-6 col-sm-3 mb-3 px-2"><img src="https://image.tmdb.org/t/p/w154' . $perso['profile_path'] . '" alt="" class="rounded img-fluid"></div>';
                                 ?>
                             </div>
 
                             <font size="4"
-                                  class="d-flex align-items-center justify-content-center p-1 pl-2 mb-3 bg-secondary border-danger rounded">
+                                  class="d-flex align-items-center justify-content-center p-1 pl-2 mb-3 bg-dark rounded">
                                 <span class="badge badge-info">1080p</span>
                                 <span class="badge badge-success mx-1">x265</span>
                                 <img class="mx-auto d-none d-sm-inline-block"
                                      src="<?= $viewData['generator']['rating']['image'] ?>"
                                      alt="<?= $viewData['generator']['rating']['note'] ?>">
-                                <span class="alert alert-dark d-none d-sm-inline-block h5 py-2 px-3 mb-0"><?= $viewData['generator']['release']->format("Y") ?></span>
+                                <span class="alert alert-light d-none d-sm-inline-block h5 py-2 px-3 mb-0"><?= $viewData['generator']['release']->format("Y") ?></span>
                             </font>
                         </div>
                     </div>
@@ -62,22 +67,10 @@
 
                 <div class="row bg-dark justify-content-center align-items-center py-5 text-left">
                     <div class="col-12 text-center">
-                        <h1 class="font-weight-light text-white mb-3">Informations</h1>
+                        <h1 class="font-weight-light text-white mb-3 text-uppercase"><font size="5">Informations</font></h1>
                     </div>
 
-                    <!--                    <div class="col-10 col-sm-7 col-md-5 col-lg-4 col-xl-3 my-3">-->
-                    <!--                        <div class="card mb-0 border border-dark">-->
-                    <!--                            <div>-->
-                    <!--                                <img src="https://img.youtube.com/vi/wyxbc_wQjaI/mqdefault.jpg" class="card-img-top img-fluid" alt="mqdefault.jpg"><a href="/misc/safe_redirect?url=aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj13eXhiY193UWphSQ==" class="card-img-overlay d-flex justify-content-center align-items-center"><img src="https://zupimages.net/up/20/21/mwzi.png" width="70" alt="mwzi.png"></a>-->
-                    <!--                            </div>-->
-                    <!--                            <div class="card-body py-2 px-3 border border-right-0 border-left-0 border-bottom-0 border-dark">-->
-                    <!--                                <p class="card-text text-dark">Thor : Love and Thunder | Bande annonce</p>-->
-                    <!--                                <p class="card-text mt-1"><font size="2"><span class="small text-primary">20 avr. 2022 - par Marvel FR</span></font></p>-->
-                    <!--                            </div>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-
-                    <div class="col-sm-11 col-md-9 col-lg-6 my-3">
+                    <div class="col-sm-11 col-md-9 col-lg-7 my-3">
                         <table class="table bg-light table-hover rounded mb-0">
                             <tbody>
                             <tr>
@@ -129,6 +122,88 @@
                             </tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    <div class="col-sm-11 col-md-9 col-lg-7 my-3">
+                        <table class="table bg-light table-hover rounded mb-0">
+                            <thead>
+                            <tr>
+                                <th colspan="3" class="py-2 text-center text-dark text-uppercase"><font size="3">Réalisateur<?= ($viewData['tv']->created_by > 1 ) ? "s" : "" ?></font></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            foreach ($viewData['tv']->created_by as $real) {?>
+                                <tr class="py-2">
+                                    <td class="py-2 text-center text-dark"><?= $real->name?></td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-sm-11 col-md-9 col-lg-7 my-3">
+                        <table class="table bg-light table-hover rounded mb-0">
+                            <thead>
+                            <tr>
+                                <th colspan="3" class="py-2 text-center text-dark text-uppercase"><font size="3">Acteur<?= ($viewData['tv']->created_by > 1 ) ? "s" : "" ?></font></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php
+                            foreach ($viewData['generator']['casts'] as $actor) {?>
+                                <tr class="py-2">
+                                    <td class="py-2 text-center text-dark"><?= $actor['name']?></td>
+                                </tr>
+                            <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row bg-light justify-content-center py-5">
+                    <div class="col-12 text-center">
+                        <h1 class="font-weight-light text-dark mb-3 text-uppercase"><font size="5">Détails Techniques</font></h1>
+                    </div>
+
+                    <div class="row mb-2 pt-4 w-75">
+                        <div class="col-md-4 my-3">
+                            <h2 class="mb-3">Vidéo</h2>
+                            <ul class="list-group pl-0">
+                                <li class="list-group-item bg-dark text-light p-2">WEBRip 1080p</li>
+                                <li class="list-group-item bg-dark text-light p-2">HEVC/x264</li>
+                                <li class="list-group-item bg-dark text-light p-2">2148 kbps</li>
+                            </ul></div>
+                        <div class="col-md-4 my-3">
+                            <h2 class="mb-3">Audio</h2>
+                            <ul class="list-group pl-0">
+                                <li class="list-group-item bg-dark text-light p-2"><img src="https://flagcdn.com/20x15/fr.png" alt="fr_FR.png"> Français (VFF) à 640 kbps</li>
+                                <li class="list-group-item bg-dark text-light p-2"><img src="https://flagcdn.com/20x15/us.png" alt="en_US.png"> Anglais (VO) à 211 kbps</li>
+                                <li class="list-group-item bg-dark text-light p-2">EAC3 | 5.1</li>
+                            </ul></div>
+                        <div class="col-md-4 my-3">
+                            <h2 class="mb-3">Sous-titres</h2>
+                            <ul class="list-group pl-0">
+                                <li class="list-group-item bg-dark text-light p-2"><img src="https://flagcdn.com/20x15/fr.png" alt="fr_FR.png"> Français (forcés, complets)</li>
+                                <li class="list-group-item bg-dark text-light p-2"><img src="https://flagcdn.com/20x15/us.png" alt="en_US.png"> Anglais (complets)</li>
+                                <li class="list-group-item bg-dark text-light p-2">TXT/SRT</li>
+                            </ul></div>
+                    </div>
+                </div>
+
+                <div class="row bg-dark justify-content-center align-items-center py-5">
+                    <div class="col-12 text-center">
+                        <h1 class="font-weight-light text-light mb-3 text-uppercase"><font size="5">Détails Torrent</font></h1>
+                    </div>
+                    <div class="row mt-3 mb-1 text-center">
+                        <div class="alert alert-primary p-2 mx-auto mb-0"><b>Débit global :</b> 2000 kbps</div>
+                        <div class="mt-3 w-100">
+                            <font size="2">
+                                <b class="text-light">Source :</b> <span class="text-warning">NF.HEPHE</span><br>
+                                <b class="text-light">Nombre de Fichiers :</b> <span class="badge badge-pill badge-success align-middle">1</span><br>
+                                <b class="text-light">Poids total du torrent : <span class="text-danger">2,00 Go</span></b>
+                            </font>
+                        </div>
                     </div>
                 </div>
             </div>
