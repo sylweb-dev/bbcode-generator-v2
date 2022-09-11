@@ -79,9 +79,15 @@ class MainController extends CoreController {
                 "run_time" => $cs->timeToString($data->episode_run_time[0]),
                 "type" => "tv"
             ];
+
+            if(isset($_GET['datas'])) {
+                $datas = json_decode($_GET['datas'], false);
+
+
+            }
         }
 
-        dump($arguments);
+//        dump($arguments);
         $this->show('pages/generate', $arguments);
     }
 
