@@ -7,7 +7,7 @@
                        aria-label="Rechercher un film ou série">
             </div>
             <div class="col-sm-12 col-sm-6 col-lg-3 mt-2">
-                <select id="type" name="type" class="form-control me-2">
+                <select id="type" name="type" class="form-select me-2">
                     <option value="multi">Tout</option>
                     <option value="tv">Série TV</option>
                     <option value="movie">Film</option>
