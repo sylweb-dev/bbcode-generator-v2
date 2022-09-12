@@ -7,10 +7,12 @@
 <body class="mb-5">
 <?php require_once __DIR__ . './../global/nav.tpl.php' ?>
 
+<!-- Formulaire de recherche -->
 <section class="my-3 container" id="find">
     <?php require_once __DIR__ . './../snippets/search-form.tpl.php' ?>
 </section>
 
+<!-- Petit récap de la série -->
 <section class="my-3 container">
     <div class="row">
         <div class="col-12">
@@ -44,10 +46,13 @@
     </div>
 </section>
 
+<!-- Formulaire de rendu -->
 <section class="my-3 container" id="container_fillform">
     <form action="" method="GET">
-        <div class="card bg-dark text-white mt-3">
-            <div class="card-header fst-italic fw-bold text-info">Informations du torrent</div>
+
+        <!-- Informations du torrent -->
+        <div class="card mt-3 bg-dark text-light">
+            <div class="card-header fst-italic fw-bold">Informations du torrent</div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 col-12 mb-4">
@@ -161,9 +166,10 @@
             </div>
         </div>
 
-        <div class="card bg-dark text-white mt-3">
-            <div class="card-header fst-italic fw-bold bg-light text-info">Pistes audio</div>
-            <div class="card-body bg-light text-dark">
+        <!-- Pistes audio -->
+        <div class="card mt-3 bg-light text-dark border-dark">
+            <div class="card-header fst-italic fw-bold">Pistes audio</div>
+            <div class="card-body text-dark">
                 <div class="row" id="audio_form">
                     <div class="col-md-4 col-12 mb-4">
                         <div class="form-group">
@@ -233,8 +239,9 @@
             </div>
         </div>
 
-        <div class="card bg-dark text-white mt-3">
-            <div class="card-header fst-italic fw-bold text-info">Sous-titres</div>
+        <!-- Sous-titres -->
+        <div class="card mt-3 bg-dark text-light">
+            <div class="card-header fst-italic fw-bold">Sous-titres</div>
             <div class="card-body">
                 <div class="row" id="txt_form">
                     <div class="col-md-6 col-12 mb-4">
@@ -294,9 +301,10 @@
             </div>
         </div>
 
-        <div class="card bg-dark text-white mt-3">
-            <div class="card-header fst-italic fw-bold bg-light text-info">Informations Globals</div>
-            <div class="card-body bg-light text-dark">
+        <!-- Informations global -->
+        <div class="card mt-3 bg-light text-dark border-dark">
+            <div class="card-header fst-italic fw-bold">Informations Globals</div>
+            <div class="card-body text-dark">
                 <div class="row" id="global">
                     <div class="col-md-4 col-12 mb-4">
                         <div class="form-group">
@@ -334,10 +342,17 @@
                 </div>
             </div>
         </div>
+
+        <!-- Bouton valider -->
+        <div class="row">
+            <div class="col-12 text-center">
+                <input type="submit" class="btn btn-lg btn-success mt-3" value="Mettre à jour le formulaire">
+            </div>
+        </div>
     </form>
-    </div>
 </section>
 
+<!-- Barres de boutons -->
 <section class="my-3 container" id="buttons">
     <div class="card bg-light my-3">
         <div class="card-body">
@@ -349,6 +364,7 @@
     </div>
 </section>
 
+<!-- Zone de rendu visuel (à supprimer ?) -->
 <section class="my-3 container" id="container_generated_view">
     <div class="card bg-light my-3">
         <div class="collapse" id="generated_view">

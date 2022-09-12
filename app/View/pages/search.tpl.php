@@ -8,28 +8,7 @@
 <?php require_once __DIR__ . './../global/nav.tpl.php' ?>
 
 <section class="my-3 container" id="find">
-    <div class="card bg-dark">
-        <div class="card-body">
-            <form method="GET" action="/search" class="row pb-2">
-                <div class="col-sm-12 col-sm-6 col-lg-8 mt-2">
-                    <input id="search" name="search" class="form-control me-2" type="search"
-                           value="<?= $viewData['data_url']['search'] ?? "" ?>" placeholder="Rechercher un film ou série"
-                           aria-label="Rechercher un film ou série">
-                </div>
-                <div class="col-sm-12 col-sm-6 col-lg-3 mt-2">
-                    <select id="type" name="type" class="form-control me-2" value="<?= $viewData['data_url']['type'] ?>">
-                        <option value="multi" <?= $viewData['data_url']['type'] == "multi" ? "selected" : "" ?>>Tout</option>
-                        <option value="tv" <?= $viewData['data_url']['type'] == "tv" ? "selected" : "" ?>>Série TV</option>
-                        <option value="movie" <?= $viewData['data_url']['type'] == "movie" ? "selected" : "" ?>>Film</option>
-                    </select>
-                </div>
-
-                <div class="col-sm-12 col-sm-6 col-lg-1 mt-2">
-                    <button class="btn btn-success w-100" type="submit"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
-        </div>
-    </div>
+    <?php require_once __DIR__ . './../snippets/search-form.tpl.php' ?>
 </section>
 
 <section class="my-3 container" id="list">
@@ -48,22 +27,25 @@
                             $title = null;
                             $class = null;
                             $url = null;
-                            if($viewData['data_url']['type'] == "tv"){
-                                $title = $data->original_name;
-                                $release = $data->first_air_date;
+                            if ($viewData['data_url']['type'] == "tv") {
+                                $title = $data->original_name ?? "N/A";
+                                $release = $data->first_air_date ?? "N/A";
                                 $class = "border-info";
                                 $url = $viewData['router']->get()->generate('main-generate-tv', ['id' => $data->id]);
                             }
-                            if($viewData['data_url']['type'] == "movie"){
-                                $title = $data->original_title;
-                                $release = $data->release_date;
+                            if ($viewData['data_url']['type'] == "movie") {
+                                $title = $data->original_title ?? "N/A";
+                                $release = $data->release_date ?? "N/A";
                                 $class = "border-success";
                                 $url = $viewData['router']->get()->generate('main-generate-movie', ['id' => $data->id]);
                             }
-                            if($viewData['data_url']['type'] == "multi"){
-                                $title = $data->media_type == "tv" ? $data->original_name : $data->original_title;
-                                $release = $data->media_type == "tv" ? $data->first_air_date : ($data->release_date ?? "N/A");
-                                $url = $viewData['router']->get()->generate("main-generate-{$data->media_type}", ['id' => $data->id]);
+                            if ($viewData['data_url']['type'] == "multi") {
+                                $title = $data->media_type == "tv" ? $data->original_name ?? "N/A" : $data->original_title ?? "N/A";
+                                $release = $data->media_type == "tv" ? $data->first_air_date ?? "N/A" : ($data->release_date ?? "N/A");
+                                if ($data->media_type == "tv" || $data->media_type == "movie")
+                                    $url = $viewData['router']->get()->generate("main-generate-{$data->media_type}", ['id' => $data->id]);
+                                else
+                                    $url = "#";
                             }
                             ?>
                             <div class="card h-100 <?= $class ?>">
@@ -90,9 +72,6 @@
                     <?php
                 } ?>
 
-                <!-- <div class="d-grid gap-2">
-                     <button class="btn btn-lg btn-dark" type="button">Voir plus</button>
-                 </div> -->
                 <?php
                 if (isset($viewData['pagination']) && $viewData['pagination']['total_pages'] > 1) {
                     $a = $viewData['pagination']['pages'];
@@ -104,12 +83,37 @@
                                 <a class="page-link" href="<?= $a->$c->prev->url ?? "" ?>">&laquo;</a>
                             </li>
                             <?php
-                            foreach ($viewData['pagination']['pages'] as $page) {
+                            $counter = $c;
+                            $for_cursor = 0;
+                            $count = 0;
+                            if ($for_cursor >= $c) {
                                 ?>
-                                <li class="page-item <?= $page->current ? "active" : "" ?>">
-                                    <a class="page-link" href="<?= $page->url ?>"><?= $page->page ?></a>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#">. . .</a>
                                 </li>
-                            <?php } ?>
+                                <?php
+                            }
+                            foreach ($viewData['pagination']['pages'] as $page) {
+                                $for_cursor++;
+                                if ($for_cursor >= $counter) {
+                                    $count++;
+                                    ?>
+                                    <li class="page-item <?= $page->current ? "active" : "" ?>">
+                                        <a class="page-link" href="<?= $page->url ?>"><?= $page->page ?></a>
+                                    </li>
+                                <?php }
+                                if($count >= 10) break;
+                            }
+                            if ($c <= 50) {
+                                ?>
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#">. . .</a>
+                                </li>
+                                <?php
+                            }
+
+
+                            ?>
                             <li class="page-item <?= $a->$c->next ? "" : "disabled" ?>">
                                 <a class="page-link" href="<?= $a->$c->next->url ?? "" ?>">&raquo;</a>
                             </li>
