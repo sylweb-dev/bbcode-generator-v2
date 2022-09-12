@@ -24,13 +24,16 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-md-7 col-12">
-                            <div class="display-4 mb-2"><?= $viewData['tv']->name ?></div>
-                            <div class="mb-5">
+                            <div class="display-4 font-weight-lighttext-white"><?= $viewData['tv']->name ?></div>
+                            <div class="mb-4">
+                                <?php if (isset($viewData['rendered']->other_season)) echo '<span class="badge badge-pill bg-danger me-1">' . $viewData['rendered']->other_season . '</span>'; ?>
+                                <?php if (isset($viewData['rendered']->other_episode)) echo '<span class="badge badge-pill bg-danger me-1">' . $viewData['rendered']->other_episode . '</span>'; ?>
                                 <?php foreach ($viewData['tv']->genres as $genre) echo '<span class="badge badge-pill bg-dark me-2">' . $genre->name . '</span>'; ?>
                             </div>
 
-                            <p class="text-muted fs-5 mb-5"
-                               style="text-align: justify"><?= $viewData['tv']->overview ?></p>
+                            <div class="text-justify mb-4">
+                                <font size="2" color="#999999"><?= $viewData['tv']->overview ?></font>
+                            </div>
 
                             <div class="row justify-content-center text-center mb-4">
                                 <?php
@@ -38,6 +41,15 @@
                                     echo '<div class="col-6 col-sm-3 mb-3 px-2"><img src="https://image.tmdb.org/t/p/w154' . $perso['profile_path'] . '" alt="' . $perso['original_name'] . '" class="rounded img-fluid"></div>';
                                 ?>
                             </div>
+
+                            <font size="4" class="d-flex align-items-center justify-content-center p-1 px-2 mb-3 bg-light border-dark rounded">
+                                <span class="badge bg-info px-3"><?= $viewData['rendered']->quality ?></span>
+                                <span class="badge bg-success px-3 mx-1">x264</span>
+                                <img class="mx-auto d-none d-sm-inline-block"
+                                     src="<?= $viewData['generator']['rating']['image'] ?>"
+                                     alt="<?= $viewData['generator']['rating']['note'] ?>">
+                                <span class="alert alert-dark d-none d-sm-inline-block h5 py-2 px-3 mb-0"><?= $viewData['generator']['release']->format("Y") ?></span>
+                            </font>
                         </div>
                         <div class="col-md-5">
                             <img src="https://image.tmdb.org/t/p/w500<?= $viewData['tv']->poster_path ?>" alt=""
@@ -53,8 +65,6 @@
 <!-- Formulaire de rendu -->
 <section class="my-3 container" id="container_fillform">
     <form action="" method="POST">
-
-
         <div class="card mt-3 bg-dark text-light">
             <div class="card-header fst-italic fw-bold">Informations de la série</div>
             <div class="card-body">
@@ -68,7 +78,7 @@
                     <div class="col-md-6 col-12 mb-4">
                         <div class="form-group">
                             <label for="other_episode">Episode</label>
-                            <input type="text" class="form-control" id="other_episode" name="other_episode" value="1">
+                            <input type="text" class="form-control" id="other_episode" name="other_episode">
                         </div>
                     </div>
                 </div>
@@ -388,49 +398,40 @@
         <div class="row">
             <div class="col-12 text-center">
                 <input type="submit" class="btn btn-lg btn-success mt-3" value="Mettre à jour le rendu">
+<!--                <button class="btn btn-primary btn-lg mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#generated_view" aria-expanded="false" aria-controls="generated_view">-->
+<!--                    Afficher le rendu-->
+<!--                </button>-->
+                <a class="btn btn-lg btn-outline-dark mt-3" onclick="copyDivToClipboard('textarea.form-control.magrossebite')">Copier le code</a>
+                <?php
+                $htmlMin = new HtmlMin();
+                $htmlMin->useKeepBrokenHtml(true);
+                $htmlMin->doSortCssClassNames(true);
+                $htmlMin->doRemoveOmittedQuotes(false);
+
+                $parser = Factory::constructSmallest()->withHtmlMin($htmlMin);
+
+                ob_start();
+                include(__DIR__ . './../snippets/render-tv.tpl.php');
+                $tvContent = ob_get_clean();
+
+                $compressedHtml = $parser->compress($tvContent);
+                ?>
+            </div>
+            <div class="col-12 mt-3">
+                <textarea class="form-control magrossebite" value="<?= $compressedHtml?>" id="magrossebite" rows="3"></textarea>
             </div>
         </div>
     </form>
 </section>
 
-<!-- Barres de boutons -->
-<section class="my-3 container" id="buttons">
-    <div class="card bg-light my-3">
-        <div class="card-body">
-            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#generated_view"
-                    aria-expanded="false" aria-controls="generated_view">
-                Afficher le rendu
-            </button>
-        </div>
-    </div>
-</section>
-
-<?php
-
-$htmlMin = new HtmlMin();
-$htmlMin->useKeepBrokenHtml(true);
-$htmlMin->doSortCssClassNames(true);
-$htmlMin->doRemoveOmittedQuotes(false);
-
-$parser = Factory::constructSmallest()->withHtmlMin($htmlMin);
-
-ob_start();
-include(__DIR__ . './../snippets/render-tv.tpl.php');
-$tvContent = ob_get_clean();
-
-//$minify = new HTMLMinify($tvContent, ['optimizationLevel' => 1]);
-$compressedHtml = $parser->compress($tvContent);
-dump($compressedHtml);
-?>
-
-<!-- Zone de rendu visuel (à supprimer ?) -->
+<!-- Zone de rendu visuel (à supprimer ?)
 <section class="my-3 container" id="container_generated_view">
     <div class="card bg-light my-3">
         <div class="collapse" id="generated_view">
-            <?php include __DIR__ . './../snippets/render-tv.tpl.php' ?>
+            <php include __DIR__ . './../snippets/render-tv.tpl.php' ?>
         </div>
     </div>
-</section>
+</section>-->
 
 <?php require_once __DIR__ . './../global/footer.tpl.php' ?>
 </body>
