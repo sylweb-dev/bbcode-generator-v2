@@ -66,7 +66,7 @@ class HttpService
 
         $req = $this->client->request(
             'GET',
-            self::API_URL . "{$type}/{$id}/aggregate_credits?api_key={$this->api_key}&language=fr-FR",
+            self::API_URL . "{$type}/{$id}/credits?api_key={$this->api_key}&language=fr-FR",
             []
         );
 

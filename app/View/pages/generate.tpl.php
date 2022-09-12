@@ -3,7 +3,6 @@
 <head>
     <?php use voku\helper\HtmlMin;
     use WyriHaximus\HtmlCompress\Factory;
-    use zz\Html\HTMLMinify;
 
     require_once __DIR__ . './../global/head.tpl.php' ?>
     <title>RapidPlace - <?= $viewData['tv']->name ?></title>
@@ -42,8 +41,9 @@
                                 ?>
                             </div>
 
-                            <font size="4" class="d-flex align-items-center justify-content-center p-1 px-2 mb-3 bg-light border-dark rounded">
-                                <span class="badge bg-info px-3"><?= $viewData['rendered']->quality ?></span>
+                            <font size="4"
+                                  class="d-flex align-items-center justify-content-center p-1 px-2 mb-3 bg-light border-dark rounded">
+                                <?php if (isset($viewData['rendered']->other_season)) echo '<span class="badge bg-info px-3">' . $viewData['rendered']->quality . '</span>'; ?>
                                 <span class="badge bg-success px-3 mx-1">x264</span>
                                 <img class="mx-auto d-none d-sm-inline-block"
                                      src="<?= $viewData['generator']['rating']['image'] ?>"
@@ -65,25 +65,33 @@
 <!-- Formulaire de rendu -->
 <section class="my-3 container" id="container_fillform">
     <form action="" method="POST">
-        <div class="card mt-3 bg-dark text-light">
-            <div class="card-header fst-italic fw-bold">Informations de la série</div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6 col-12 mb-4">
-                        <div class="form-group">
-                            <label for="other_season">Saison</label>
-                            <input type="text" class="form-control" id="other_season" name="other_season" placeholder="01 / Intégrale">
+        <?php
+        if ($viewData['isTv']) {
+            ?>
+            <div class="card mt-3 bg-dark text-light">
+                <div class="card-header fst-italic fw-bold">Informations de la série</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-12 mb-4">
+                            <div class="form-group">
+                                <label for="other_season">Saison</label>
+                                <input type="text" class="form-control" id="other_season" name="other_season"
+                                       placeholder="01 / Intégrale">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 col-12 mb-4">
-                        <div class="form-group">
-                            <label for="other_episode">Episode</label>
-                            <input type="text" class="form-control" id="other_episode" name="other_episode">
+                        <div class="col-md-6 col-12 mb-4">
+                            <div class="form-group">
+                                <label for="other_episode">Episode</label>
+                                <input type="text" class="form-control" id="other_episode" name="other_episode">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <?php
+        }
+        ?>
+
         <!-- Informations du torrent -->
         <div class="card mt-3 bg-light text-dark">
             <div class="card-header fst-italic fw-bold">Informations du torrent</div>
@@ -398,10 +406,11 @@
         <div class="row">
             <div class="col-12 text-center">
                 <input type="submit" class="btn btn-lg btn-success mt-3" value="Mettre à jour le rendu">
-<!--                <button class="btn btn-primary btn-lg mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#generated_view" aria-expanded="false" aria-controls="generated_view">-->
-<!--                    Afficher le rendu-->
-<!--                </button>-->
-                <a class="btn btn-lg btn-outline-dark mt-3" onclick="copyDivToClipboard('textarea.form-control.magrossebite')">Copier le code</a>
+                <!--                <button class="btn btn-primary btn-lg mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#generated_view" aria-expanded="false" aria-controls="generated_view">-->
+                <!--                    Afficher le rendu-->
+                <!--                </button>-->
+                <a class="btn btn-lg btn-outline-dark mt-3"
+                   onclick="copyDivToClipboard('textarea.form-control.copy-code')">Copier le code</a>
                 <?php
                 $htmlMin = new HtmlMin();
                 $htmlMin->useKeepBrokenHtml(true);
@@ -418,7 +427,7 @@
                 ?>
             </div>
             <div class="col-12 mt-3">
-                <textarea class="form-control magrossebite" value="<?= $compressedHtml?>" id="magrossebite" rows="3"></textarea>
+                <textarea class="form-control copy-code" value=<?= $compressedHtml ?>></textarea>
             </div>
         </div>
     </form>

@@ -56,7 +56,6 @@ class MainController extends CoreController {
             $cast = json_decode(json_encode($hs->credits($id)->getData()->cast), true);
             setlocale(LC_TIME, "fr_FR");
             $release_date = new DateTime($data->first_air_date);
-            //usort($cast, fn($a, $b) => $a['order'] <=> $b['order']);
 
             $countryResult = "";
             for ($i = 0; $i < sizeof($data->origin_country); $i++) {
@@ -67,6 +66,7 @@ class MainController extends CoreController {
                 }
             }
 
+            $arguments['isTv'] = true;
             $arguments['tv'] = $data;
             $arguments['generator'] = [
                 "rating" => [
@@ -85,12 +85,60 @@ class MainController extends CoreController {
                 $_POST['audios'] = $cs->parseRepeater($_POST, "audio");
 
                 $arguments['rendered'] = json_decode(json_encode($_POST), false);
-
-//                $arguments['minified'] =
             }
         }
 
-//        dump($arguments);
+        $this->show('pages/generate', $arguments);
+    }
+
+    public function generate_movie($arguments = [])
+    {
+        if(isset($arguments['id'])) {
+            $id = $arguments['id'];
+
+            $rs = new RatingService();
+            $cs = new ConvertionService();
+            $hs = new HttpService($_ENV['KEY_IMDB_API']);
+
+            $req = $hs->find($id, "movie");
+            $data = $req->getData();
+            dump($data);
+
+            $cast = json_decode(json_encode($hs->credits($id, "movie")->getData()->cast), true);
+            setlocale(LC_TIME, "fr_FR");
+            $release_date = new DateTime($data->release_date);
+
+            $countryResult = "";
+            for ($i = 0; $i < sizeof($data->production_countries); $i++) {
+                if($i < sizeof($data->production_countries)) {
+                    $countryResult .= "{$data->production_countries[$i]->iso_3166_1}";
+                } else {
+                    $countryResult .= "{$data->production_countries[$i]->iso_3166_1}, ";
+                }
+            }
+
+            $arguments['isTv'] = false;
+            $arguments['tv'] = $data;
+            $arguments['tv']->name = $data->title;
+            $arguments['generator'] = [
+                "rating" => [
+                    "image" => $rs->getStars($data->vote_average),
+                    "note" => $data->vote_average,
+                ],
+                "casts" => array_slice($cast, 0, 4),
+                "release" => $release_date,
+                "countries" => $countryResult,
+                "type" => "tv"
+            ];
+
+            if(isset($_POST['quality'])) {
+                $_POST['txts'] = $cs->parseRepeater($_POST, "txt");
+                $_POST['audios'] = $cs->parseRepeater($_POST, "audio");
+
+                $arguments['rendered'] = json_decode(json_encode($_POST), false);
+            }
+        }
+
         $this->show('pages/generate', $arguments);
     }
 
