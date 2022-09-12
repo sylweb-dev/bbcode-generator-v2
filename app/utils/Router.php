@@ -45,7 +45,7 @@ class Router {
             '/generate-movie/[:id]',
             [
                 'controller' => 'MainController',
-                'method' => 'generate_movie',
+                'method' => 'generate_tv',
             ],
             'main-generate-movie'
         );

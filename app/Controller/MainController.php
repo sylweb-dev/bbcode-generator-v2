@@ -90,7 +90,7 @@ class MainController extends CoreController {
             }
         }
 
-        dump($arguments);
+//        dump($arguments);
         $this->show('pages/generate', $arguments);
     }
 
