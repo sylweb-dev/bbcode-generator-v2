@@ -142,7 +142,6 @@ class MainController extends CoreController {
             }
         }
 
-        dump($arguments);
         $this->show('pages/generate', $arguments);
     }
 
