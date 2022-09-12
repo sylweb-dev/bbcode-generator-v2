@@ -41,7 +41,7 @@ class Router {
 
         //? Generate Page
         $this->router->map(
-            'GET',
+            'GET|POST',
             '/generate-movie/[:id]',
             [
                 'controller' => 'MainController',

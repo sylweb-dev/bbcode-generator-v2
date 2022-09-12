@@ -102,9 +102,9 @@ class MainController extends CoreController {
 
             $req = $hs->find($id, "movie");
             $data = $req->getData();
-            dump($data);
 
             $cast = json_decode(json_encode($hs->credits($id, "movie")->getData()->cast), true);
+            $crew = json_decode(json_encode($hs->credits($id, "movie")->getData()->crew), true);
             setlocale(LC_TIME, "fr_FR");
             $release_date = new DateTime($data->release_date);
 
@@ -119,16 +119,19 @@ class MainController extends CoreController {
 
             $arguments['isTv'] = false;
             $arguments['tv'] = $data;
+            $arguments['casts'] = $cast;
             $arguments['tv']->name = $data->title;
             $arguments['generator'] = [
                 "rating" => [
                     "image" => $rs->getStars($data->vote_average),
                     "note" => $data->vote_average,
                 ],
+                "run_time" => $cs->timeToString($data->runtime),
                 "casts" => array_slice($cast, 0, 4),
                 "release" => $release_date,
                 "countries" => $countryResult,
-                "type" => "tv"
+                "type" => "movie",
+                "directors" => $cs->getCrew($crew, "Director"),
             ];
 
             if(isset($_POST['quality'])) {
@@ -139,6 +142,7 @@ class MainController extends CoreController {
             }
         }
 
+        dump($arguments);
         $this->show('pages/generate', $arguments);
     }
 

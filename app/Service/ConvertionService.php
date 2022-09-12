@@ -31,6 +31,19 @@ class ConvertionService
         }
         return $return_array;
     }
+
+    public function getCrew(array $array, string $job = "director")
+    {
+        $result = [];
+
+        foreach ($array as $item) {
+            if($item['job'] == $job) {
+                $result[] = $item;
+            }
+        }
+
+        return$result;
+    }
 }
 
 /*

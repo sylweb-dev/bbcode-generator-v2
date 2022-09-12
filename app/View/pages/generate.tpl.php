@@ -426,9 +426,13 @@
                 $compressedHtml = $parser->compress($tvContent);
                 ?>
             </div>
-            <div class="col-12 mt-3">
-                <textarea class="form-control copy-code" value=<?= $compressedHtml ?>></textarea>
-            </div>
+            <?php
+                if(isset($viewData['rendered'])) {
+                ?>
+                <div class="col-12 mt-3">
+                    <textarea class="form-control copy-code" value=<?= $compressedHtml ?>></textarea>
+                </div>
+            <?php } ?>
         </div>
     </form>
 </section>

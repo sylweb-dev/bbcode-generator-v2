@@ -3,11 +3,11 @@
         <div class="row bg-light justify-content-center align-items-center py-5">
             <div class="col-xl-5 col-lg-6 col-md-7 col-11 mt-1 text-left">
                 <div class="pl-xl-4 pl-lg-3 pl-md-2">
-                    <div class="display-3 font-weight-lighttext-white"><?= $viewData['tv']->name ?></div>
+                    <div class="display-4 font-weight-lighttext-white"><?= $viewData['tv']->name ?></div>
                     <div class="mb-4">
                         <font size="4">
-                            <?php if (isset($viewData['rendered']->other_season)) echo '<span class="badge badge-pill badge-danger mr-1 h1">' . $viewData['rendered']->other_season . '</span>'; ?>
-                            <?php if (isset($viewData['rendered']->other_episode)) echo '<span class="badge badge-pill badge-danger mr-1 h1">' . $viewData['rendered']->other_episode . '</span>'; ?>
+                            <?php if (isset($viewData['rendered']->other_season) && $viewData['isTv']) echo '<span class="badge badge-pill badge-danger mr-1 h1">' . $viewData['rendered']->other_season . '</span>'; ?>
+                            <?php if (isset($viewData['rendered']->other_episode) && $viewData['isTv']) echo '<span class="badge badge-pill badge-danger mr-1 h1">' . $viewData['rendered']->other_episode . '</span>'; ?>
                             <?php foreach ($viewData['tv']->genres as $genre) echo '<span class="badge badge-pill badge-dark mr-2 h1">' . $genre->name . '</span>'; ?>
                         </font>
                     </div>
@@ -25,7 +25,7 @@
 
                     <font size="4"
                           class="d-flex align-items-center justify-content-center p-1 pl-2 mb-3 bg-white border-dark rounded">
-                        <span class="badge badge-info"><?= $viewData['rendered']->quality ?></span>
+                        <?php if (isset($viewData['rendered']->other_season)) echo '<span class="badge badge-info">' . $viewData['rendered']->quality . '</span>'; ?>
                         <span class="badge badge-success mx-1">x264</span>
                         <img class="mx-auto d-none d-sm-inline-block"
                              src="<?= $viewData['generator']['rating']['image'] ?>"
@@ -76,7 +76,7 @@
                         <td class="bg-transparent py-2 text-capitalize text-left">
                             <font size="2" class="d-flex justify-content-between">
                                 <b><span class="ico_film"></span> Titre original
-                                    :</b> <?= $viewData['tv']->original_name ?>
+                                    :</b> <?= $viewData['tv']->original_name ?? $viewData['tv']->original_title ?>
                             </font>
                         </td>
                     </tr>
@@ -109,16 +109,17 @@
                 <table class="table bg-light table-hover rounded mb-0">
                     <thead>
                     <tr>
-                        <th colspan="3" class="py-2 text-center text-dark text-uppercase"><font
-                                    size="3">Réalisateur<?= (sizeof($viewData['tv']->created_by) > 1) ? "s" : "" ?></font>
+                        <th colspan="3" class="py-2 text-center text-dark text-uppercase">
+                            <font size="3">Réalisateur<?php if(isset($viewData['tv']->created_by)) (sizeof($viewData['tv']->created_by) > 1) ? "s" : "" ?>
+                            </font>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
                     <?php
-                    foreach ($viewData['tv']->created_by as $real) { ?>
+                    foreach ($viewData['tv']->created_by ?? $viewData['generator']['directors'] as $real) { ?>
                         <tr class="py-2">
-                            <td class="py-2 text-center text-dark"><?= $real->name ?></td>
+                            <td class="py-2 text-center text-dark"><?= $real->name ?? $real['original_name'] ?></td>
                         </tr>
                     <?php } ?>
                     </tbody>
@@ -130,7 +131,7 @@
                     <thead>
                     <tr>
                         <th colspan="3" class="py-2 text-center text-dark text-uppercase"><font
-                                    size="3">Acteur<?= ($viewData['tv']->created_by > 1) ? "s" : "" ?></font>
+                                    size="3">Acteur<?= ($viewData['generator']['casts'] > 1) ? "s" : "" ?></font>
                         </th>
                     </tr>
                     </thead>
@@ -138,7 +139,7 @@
                     <?php
                     foreach ($viewData['generator']['casts'] as $actor) { ?>
                         <tr class="py-2">
-                            <td class="py-2 text-center text-dark"><?= $actor['name'] ?></td>
+                            <td class="py-2 text-center text-dark"><?= $actor['original_name'] ?></td>
                         </tr>
                     <?php } ?>
                     </tbody>
@@ -220,7 +221,7 @@
 
     <div class="row justify-content-center py-4 bg-light text-center">
         <div>
-            <img src="https://static.hephe.net/images/banner/footer_banner.jpg" alt="Footer Banner" class="rounded" />
+            <img src="https://static.hephe.net/images/banner/footer_banner.jpg" alt="Footer Banner" class="rounded"/>
         </div>
     </div>
 </div>
