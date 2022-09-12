@@ -205,8 +205,10 @@
             </div>
         </div>
 
-        <div class="justify-content-center py-4 bg-light text-center">
-            <img src="https://static.hephe.net/images/banner/footer_banner.jpg" alt="Footer Banner" class="rounded">
+        <div class="row justify-content-center py-4 bg-light text-center">
+            <div>
+                <img src="https://static.hephe.net/images/banner/footer_banner.jpg" alt="Footer Banner" class="rounded">
+            </div>
         </div>
     </div>
 </div>
