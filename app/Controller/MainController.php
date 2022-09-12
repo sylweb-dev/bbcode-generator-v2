@@ -80,14 +80,17 @@ class MainController extends CoreController {
                 "type" => "tv"
             ];
 
-            if(isset($_GET['datas'])) {
-                $datas = json_decode($_GET['datas'], false);
+            if(isset($_POST['quality'])) {
+                $_POST['txts'] = $cs->parseRepeater($_POST, "txt");
+                $_POST['audios'] = $cs->parseRepeater($_POST, "audio");
 
+                $arguments['rendered'] = json_decode(json_encode($_POST), false);
 
+//                $arguments['minified'] =
             }
         }
 
-//        dump($arguments);
+        dump($arguments);
         $this->show('pages/generate', $arguments);
     }
 

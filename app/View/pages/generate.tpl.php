@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <?php require_once __DIR__ . './../global/head.tpl.php' ?>
-    <title>RapidPlace - Accueil</title>
+    <?php use voku\helper\HtmlMin;
+    use WyriHaximus\HtmlCompress\Factory;
+    use zz\Html\HTMLMinify;
+
+    require_once __DIR__ . './../global/head.tpl.php' ?>
+    <title>RapidPlace - <?= $viewData['tv']->name ?></title>
 </head>
-<body class="mb-5">
+<body>
 <?php require_once __DIR__ . './../global/nav.tpl.php' ?>
 
 <!-- Formulaire de recherche -->
@@ -48,10 +52,30 @@
 
 <!-- Formulaire de rendu -->
 <section class="my-3 container" id="container_fillform">
-    <form action="" method="GET">
+    <form action="" method="POST">
 
-        <!-- Informations du torrent -->
+
         <div class="card mt-3 bg-dark text-light">
+            <div class="card-header fst-italic fw-bold">Informations de la série</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 col-12 mb-4">
+                        <div class="form-group">
+                            <label for="other_season">Saison</label>
+                            <input type="text" class="form-control" id="other_season" name="other_season" placeholder="01 / Intégrale">
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12 mb-4">
+                        <div class="form-group">
+                            <label for="other_episode">Episode</label>
+                            <input type="text" class="form-control" id="other_episode" name="other_episode" value="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Informations du torrent -->
+        <div class="card mt-3 bg-light text-dark">
             <div class="card-header fst-italic fw-bold">Informations du torrent</div>
             <div class="card-body">
                 <div class="row">
@@ -167,145 +191,161 @@
         </div>
 
         <!-- Pistes audio -->
-        <div class="card mt-3 bg-light text-dark border-dark">
+        <div class="card mt-3 bg-dark text-light border-dark">
             <div class="card-header fst-italic fw-bold">Pistes audio</div>
             <div class="card-body text-dark">
-                <div class="row" id="audio_form">
-                    <div class="col-md-4 col-12 mb-4">
-                        <div class="form-group">
-                            <label for="audio">Langue</label>
-                            <select class="form-select" id="audio" name="audio">
-                                <option value="vff">Français (VFF)</option>
-                                <option value="vfq">Québécois (VFQ)</option>
-                                <option value="vfi">Français (VFI)</option>
-                                <option value="us"> Anglais</option>
-                                <option disabled="" class="text-muted">------</option>
-                                <option value="es"> Espagnol</option>
-                                <option value="de"> Allemand</option>
-                                <option value="it"> Italien</option>
-                                <option value="pt"> Portugais</option>
-                                <option value="jp"> Japonais</option>
-                                <option value="kr"> Portugais</option>
-                                <option value="ru"> Russe</option>
-                                <option value="sa"> Arabe</option>
-                                <option value="nl"> Néerlandais</option>
-                                <option value="dk"> Danois</option>
-                                <option value="cn"> Chinois</option>
-                            </select>
+                <div id="container_audio">
+                    <input type="hidden" name="audio" id="audio" value="1">
+                    <div class="row" id="audio_1_form">
+                        <div class="col-md-3 col-12 mb-4">
+                            <div class="form-group">
+                                <label for="audio_1_lang">Langue</label>
+                                <select class="form-select" id="audio_1_lang" name="audio_1_lang">
+                                    <option value="Français (VFF)">Français (VFF)</option>
+                                    <option value="Québécois (VFQ)">Québécois (VFQ)</option>
+                                    <option value="Français (VFI)">Français (VFI)</option>
+                                    <option value="Anglais">Anglais</option>
+                                    <option value="Espagnol">Espagnol</option>
+                                    <option value="Allemand">Allemand</option>
+                                    <option value="Italien">Italien</option>
+                                    <option value="Portugais">Portugais</option>
+                                    <option value="Japonais">Japonais</option>
+                                    <option value="Coréen">Portugais</option>
+                                    <option value="Russe">Russe</option>
+                                    <option value="Arabe">Arabe</option>
+                                    <option value="Néerlandais">Néerlandais</option>
+                                    <option value="Danois"> Danois"> Danois</option>
+                                    <option value="Chinois"> Chinois"> Chinois</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-4 col-12 mb-4">
-                        <div class="form-group">
-                            <label for="audio_codec">Codec audio</label>
-                            <select class="form-select" id="audio_codec" name="audio_codec">
-                                <option value="AC3">AC3</option>
-                                <option value="EAC3">EAC3</option>
-                                <option disabled="" class="text-muted">------</option>
-                                <option value="AAC">AAC</option>
-                                <option value="AAC-LC">AAC-LC</option>
-                                <option value="HE-AAC">HE-AAC</option>
-                                <option disabled="" class="text-muted">------</option>
-                                <option value="Dolby Digital">Dolby Digital</option>
-                                <option value="Dolby Digital Plus">Dolby Digital Plus</option>
-                                <option value="Dolby TrueHD">Dolby TrueHD</option>
-                                <option disabled="" class="text-muted">------</option>
-                                <option value="DTS">DTS</option>
-                                <option value="DTS HD">DTS HD</option>
-                                <option value="DTS HDMA">DTS HDMA</option>
-                                <option disabled="" class="text-muted">------</option>
-                                <option value="PCM">PCM</option>
-                                <option value="LPCM">LPCM</option>
-                                <option disabled="" class="text-muted">------</option>
-                                <option value="OGG">OGG</option>
-                                <option value="WAV">WAV</option>
-                                <option value="FLAC">FLAC</option>
-                            </select>
+                        <div class="col-md-3 col-12 mb-4">
+                            <div class="form-group">
+                                <label for="audio_1_codec">Codec audio</label>
+                                <select class="form-select" id="audio_1_codec" name="audio_1_codec">
+                                    <option value="AC3">AC3</option>
+                                    <option value="EAC3">EAC3</option>
+                                    <option disabled="" class="text-muted">------</option>
+                                    <option value="AAC">AAC</option>
+                                    <option value="AAC-LC">AAC-LC</option>
+                                    <option value="HE-AAC">HE-AAC</option>
+                                    <option disabled="" class="text-muted">------</option>
+                                    <option value="Dolby Digital">Dolby Digital</option>
+                                    <option value="Dolby Digital Plus">Dolby Digital Plus</option>
+                                    <option value="Dolby TrueHD">Dolby TrueHD</option>
+                                    <option disabled="" class="text-muted">------</option>
+                                    <option value="DTS">DTS</option>
+                                    <option value="DTS HD">DTS HD</option>
+                                    <option value="DTS HDMA">DTS HDMA</option>
+                                    <option disabled="" class="text-muted">------</option>
+                                    <option value="PCM">PCM</option>
+                                    <option value="LPCM">LPCM</option>
+                                    <option disabled="" class="text-muted">------</option>
+                                    <option value="OGG">OGG</option>
+                                    <option value="WAV">WAV</option>
+                                    <option value="FLAC">FLAC</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-4 col-12 mb-4">
-                        <div class="form-group">
-                            <label for="audio_debit">Débit audio</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" id="audio_debit" name="audio_debit"
-                                       placeholder="2500"/>
-                                <span class="input-group-text">kb/s</span>
+                        <div class="col-md-2 col-12 mb-4">
+                            <div class="form-group">
+                                <label for="audio_1_piste">Pistes</label>
+                                <select class="form-select" id="audio_1_piste" name="audio_1_piste">
+                                    <option value="mono">1.0 (Mono)</option>
+                                    <option value="2.0">2.0 (Stéréo)</option>
+                                    <option value="5.1" selected="">5.1 (6CH)</option>
+                                    <option value="7.1">7.1 (8CH)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-12 mb-4">
+                            <div class="form-group">
+                                <label for="audio_1_debit">Débit audio</label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="audio_1_debit" name="audio_1_debit"
+                                           placeholder="2500"/>
+                                    <span class="input-group-text">kb/s</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 text-center">
-                        <input type="button" class="btn btn-outline-primary" value="Ajouter une piste audio">
-                    </div>
+                </div>
+                <div class="col-12 text-center">
+                    <input type="button" class="btn btn-outline-light" value="Ajouter une piste audio"
+                           id="audio_clone_btn">
                 </div>
             </div>
         </div>
 
         <!-- Sous-titres -->
-        <div class="card mt-3 bg-dark text-light">
+        <div class="card mt-3 bg-light text-dark">
             <div class="card-header fst-italic fw-bold">Sous-titres</div>
             <div class="card-body">
-                <div class="row" id="txt_form">
-                    <div class="col-md-6 col-12 mb-4">
-                        <div class="form-group">
-                            <label for="txt">Langue</label>
-                            <select class="form-select" id="txt" name="txt">
-                                <option value="vff">Français (VFF)</option>
-                                <option value="vfq">Québécois (VFQ)</option>
-                                <option value="vfi">Français (VFI)</option>
-                                <option value="us"> Anglais</option>
-                                <option disabled="" class="text-muted">------</option>
-                                <option value="es"> Espagnol</option>
-                                <option value="de"> Allemand</option>
-                                <option value="it"> Italien</option>
-                                <option value="pt"> Portugais</option>
-                                <option value="jp"> Japonais</option>
-                                <option value="kr"> Portugais</option>
-                                <option value="ru"> Russe</option>
-                                <option value="sa"> Arabe</option>
-                                <option value="nl"> Néerlandais</option>
-                                <option value="dk"> Danois</option>
-                                <option value="cn"> Chinois</option>
-                            </select>
+                <div id="container_txt">
+                    <input type="hidden" name="txt" id="txt" value="1">
+                    <div class="row" id="txt_1_form">
+                        <div class="col-md-6 col-12 mb-4">
+                            <div class="form-group">
+                                <label for="txt_1_lang">Langue</label>
+                                <select class="form-select" id="txt_1_lang" name="txt_1_lang">
+                                    <option value="Français (VFF)">Français (VFF)</option>
+                                    <option value="Québécois (VFQ)">Québécois (VFQ)</option>
+                                    <option value="Français (VFI)">Français (VFI)</option>
+                                    <option value="Anglais">Anglais</option>
+                                    <option value="Espagnol">Espagnol</option>
+                                    <option value="Allemand">Allemand</option>
+                                    <option value="Italien">Italien</option>
+                                    <option value="Portugais">Portugais</option>
+                                    <option value="Japonais">Japonais</option>
+                                    <option value="Coréen">Portugais</option>
+                                    <option value="Russe">Russe</option>
+                                    <option value="Arabe">Arabe</option>
+                                    <option value="Néerlandais">Néerlandais</option>
+                                    <option value="Danois"> Danois"> Danois</option>
+                                    <option value="Chinois"> Chinois"> Chinois</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12 mb-4">
+                            <div class="form-group">
+                                <label for="txt_1_format">Format</label>
+                                <select class="form-select" id="txt_1_format" name="txt_1_format">
+                                    <option value="Text/SRT (forced)">Text/SRT (forced)</option>
+                                    <option value="Text/SRT (full)">Text/SRT (Complets)</option>
+                                    <option value="Text/SRT (SDH)">Text/SRT (SDH)</option>
+                                    <option disabled="" class="text-muted">------</option>
+                                    <option value="Text/ASS (forced)">Text/ASS (forced)</option>
+                                    <option value="Text/ASS (full)">Text/ASS (Complets)</option>
+                                    <option value="Text/ASS (SDH)">Text/ASS (SDH)</option>
+                                    <option disabled="" class="text-muted">------</option>
+                                    <option value="Text/Timed Text (forced)">Text/Timed Text (forced)</option>
+                                    <option value="Text/Timed Text (Complets)">Text/Timed Text (Complets)</option>
+                                    <option value="Text/Timed Text (SDH)">Text/Timed Text (SDH)</option>
+                                    <option disabled="" class="text-muted">------</option>
+                                    <option value="VobSub (forced)">VobSub (forced)</option>
+                                    <option value="VobSub (full)">VobSub (Complets)</option>
+                                    <option value="VobSub (SDH)">VobSub (SDH)</option>
+                                    <option disabled="" class="text-muted">------</option>
+                                    <option value="PGS (forced)">PGS (forced)</option>
+                                    <option value="PGS (full)">PGS (Complets)</option>
+                                    <option value="PGS (SDH)">PGS (SDH)</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-12 mb-4">
-                        <div class="form-group">
-                            <label for="txt_format">Format</label>
-                            <select class="form-select" id="txt_format" name="txt_format">
-                                <option value="Text/SRT (forced)">Text/SRT (forced)</option>
-                                <option value="Text/SRT (full)">Text/SRT (Complets)</option>
-                                <option value="Text/SRT (SDH)">Text/SRT (SDH)</option>
-                                <option disabled="" class="text-muted">------</option>
-                                <option value="Text/ASS (forced)">Text/ASS (forced)</option>
-                                <option value="Text/ASS (full)">Text/ASS (Complets)</option>
-                                <option value="Text/ASS (SDH)">Text/ASS (SDH)</option>
-                                <option disabled="" class="text-muted">------</option>
-                                <option value="Text/Timed Text (forced)">Text/Timed Text (forced)</option>
-                                <option value="Text/Timed Text (Complets)">Text/Timed Text (Complets)</option>
-                                <option value="Text/Timed Text (SDH)">Text/Timed Text (SDH)</option>
-                                <option disabled="" class="text-muted">------</option>
-                                <option value="VobSub (forced)">VobSub (forced)</option>
-                                <option value="VobSub (full)">VobSub (Complets)</option>
-                                <option value="VobSub (SDH)">VobSub (SDH)</option>
-                                <option disabled="" class="text-muted">------</option>
-                                <option value="PGS (forced)">PGS (forced)</option>
-                                <option value="PGS (full)">PGS (Complets)</option>
-                                <option value="PGS (SDH)">PGS (SDH)</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="col-12 text-center">
-                        <input type="button" class="btn btn-outline-light" value="Ajouter des sous-titres">
-                    </div>
+                </div>
+                <div class="col-12 text-center">
+                    <input type="button" class="btn btn-outline-dark" value="Ajouter des sous-titres"
+                           id="txt_clone_btn" name="txt_clone_btn">
                 </div>
             </div>
         </div>
 
         <!-- Informations global -->
-        <div class="card mt-3 bg-light text-dark border-dark">
+        <div class="card mt-3 bg-dark text-light border-dark">
             <div class="card-header fst-italic fw-bold">Informations Globals</div>
             <div class="card-body text-dark">
-                <div class="row" id="global">
+                <div class="row" id="global_form">
                     <div class="col-md-4 col-12 mb-4">
                         <div class="form-group">
                             <label for="global_debit">Débit global</label>
@@ -319,7 +359,8 @@
                     <div class="col-md-4 col-12 mb-4">
                         <div class="form-group">
                             <label for="global_filescount">Nombre de fichiers</label>
-                            <input type="number" class="form-control" id="global_filescount" name="global_filescount"
+                            <input type="number" class="form-control" id="global_filescount"
+                                   name="global_filescount"
                                    placeholder="1">
                         </div>
                     </div>
@@ -329,7 +370,7 @@
                             <div class="input-group">
                                 <input type="text" class="form-control" id="global_size" name="global_size"
                                        placeholder="2,5"/>
-                                <select class="input-group-text" id="global_size_unit" name="global_size_unit">
+                                <select class="input-group-text" id="global_sizeunit" name="global_sizeunit">
                                     <option value="Kb">Kb</option>
                                     <option value="Mo">Mo</option>
                                     <option value="Go" selected="">Go</option>
@@ -346,7 +387,7 @@
         <!-- Bouton valider -->
         <div class="row">
             <div class="col-12 text-center">
-                <input type="submit" class="btn btn-lg btn-success mt-3" value="Mettre à jour le formulaire">
+                <input type="submit" class="btn btn-lg btn-success mt-3" value="Mettre à jour le rendu">
             </div>
         </div>
     </form>
@@ -364,220 +405,29 @@
     </div>
 </section>
 
+<?php
+
+$htmlMin = new HtmlMin();
+$htmlMin->useKeepBrokenHtml(true);
+$htmlMin->doSortCssClassNames(true);
+$htmlMin->doRemoveOmittedQuotes(false);
+
+$parser = Factory::constructSmallest()->withHtmlMin($htmlMin);
+
+ob_start();
+include(__DIR__ . './../snippets/render-tv.tpl.php');
+$tvContent = ob_get_clean();
+
+//$minify = new HTMLMinify($tvContent, ['optimizationLevel' => 1]);
+$compressedHtml = $parser->compress($tvContent);
+dump($compressedHtml);
+?>
+
 <!-- Zone de rendu visuel (à supprimer ?) -->
 <section class="my-3 container" id="container_generated_view">
     <div class="card bg-light my-3">
         <div class="collapse" id="generated_view">
-            <div class="row">
-                <div class="bg-light w-100 text-center">
-                    <div class="row bg-light justify-content-center align-items-center py-5">
-                        <div class="col-xl-5 col-lg-6 col-md-7 col-11 mt-1 text-left">
-                            <div class="pl-xl-4 pl-lg-3 pl-md-2">
-                                <div class="display-4 font-weight-lighttext-white"><?= $viewData['tv']->name ?></div>
-                                <div class="mb-4">
-                                    <?php foreach ($viewData['tv']->genres as $genre) echo '<span class="badge badge-pill badge-dark mr-2">' . $genre->name . '</span>'; ?>
-                                </div>
-
-                                <div class="text-justify mb-4">
-                                    <font size="2" color="#999999"><?= $viewData['tv']->overview ?></font>
-                                </div>
-
-                                <div class="row justify-content-center text-center mb-4">
-                                    <?php
-                                    foreach ($viewData['generator']['casts'] as $perso)
-                                        echo '<div class="col-6 col-sm-3 mb-3 px-2"><img src="https://image.tmdb.org/t/p/w154' . $perso['profile_path'] . '" alt="' . $perso['original_name'] . '" class="rounded img-fluid"></div>';
-                                    ?>
-                                </div>
-
-                                <font size="4"
-                                      class="d-flex align-items-center justify-content-center p-1 pl-2 mb-3 bg-light border-dark rounded">
-                                    <span class="badge badge-info">1080p</span>
-                                    <span class="badge badge-success mx-1">x264</span>
-                                    <img class="mx-auto d-none d-sm-inline-block"
-                                         src="<?= $viewData['generator']['rating']['image'] ?>"
-                                         alt="<?= $viewData['generator']['rating']['note'] ?>">
-                                    <span class="alert alert-dark d-none d-sm-inline-block h5 py-2 px-3 mb-0"><?= $viewData['generator']['release']->format("Y") ?></span>
-                                </font>
-                            </div>
-                        </div>
-                        <div class="col-lg-5 px-lg-5">
-                            <img src="https://image.tmdb.org/t/p/w500<?= $viewData['tv']->poster_path ?>"
-                                 alt="" class="img-fluid rounded w-100">
-                        </div>
-                    </div>
-
-                    <div class="row bg-dark justify-content-center align-items-center py-5 text-left">
-                        <div class="col-12 text-center">
-                            <h1 class="font-weight-light text-white mb-3 text-uppercase"><font
-                                        size="5">Informations</font></h1>
-                        </div>
-
-                        <div class="col-sm-11 col-md-9 col-lg-7 my-3">
-                            <table class="table bg-light table-hover rounded mb-0">
-                                <tbody>
-                                <tr>
-                                    <td class="bg-transparent py-2 text-capitalize text-left">
-                                        <font size="2" class="d-flex justify-content-between">
-                                            <b><span class="ico_calendar"></span> Date de sortie
-                                                :</b> <?= $viewData['generator']['release']->format("D j M Y") ?>
-                                        </font>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-transparent py-2 text-capitalize text-left">
-                                        <font size="2" class="d-flex justify-content-between">
-                                            <b><span class="ico_clock-o"></span> Durée
-                                                :</b> <?= $viewData['generator']['run_time'] ?>
-                                        </font>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-transparent py-2 text-capitalize text-left">
-                                        <font size="2" class="d-flex justify-content-between">
-                                            <b><span class="ico_globe"></span> Origine
-                                                :</b> <?= $viewData['generator']['countries'] ?>
-                                        </font>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-transparent py-2 text-capitalize text-left">
-                                        <font size="2" class="d-flex justify-content-between">
-                                            <b><span class="ico_film"></span> Titre original
-                                                :</b> <?= $viewData['tv']->original_name ?>
-                                        </font>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-transparent py-2 text-capitalize text-left">
-                                        <font size="2" class="d-flex justify-content-between">
-                                            <b><span class="ico_heart-o"></span> Critiques des spectateurs :</b>
-                                            <span>
-                                                <img src="<?= $viewData['generator']['rating']['image'] ?>" alt="">
-                                                <?= round(($viewData['generator']['rating']['note'] * 50) / 100, 2) ?>
-                                            </span>
-                                        </font>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="bg-transparent py-2 text-capitalize text-left">
-                                        <font size="2" class="d-flex justify-content-between">
-                                            <b><span class="ico_globe"></span> TheMovieDB :</b>
-                                            <a href="https://www.themoviedb.org/<?= $viewData['generator']['type'] ?>/<?= $viewData['tv']->id ?>"
-                                               class="font-italic">Fiche
-                                                du Film</a>
-                                        </font>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="col-sm-11 col-md-9 col-lg-7 my-3">
-                            <table class="table bg-light table-hover rounded mb-0">
-                                <thead>
-                                <tr>
-                                    <th colspan="3" class="py-2 text-center text-dark text-uppercase"><font size="3">Réalisateur<?= (sizeof($viewData['tv']->created_by) > 1) ? "s" : "" ?></font>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                foreach ($viewData['tv']->created_by as $real) { ?>
-                                    <tr class="py-2">
-                                        <td class="py-2 text-center text-dark"><?= $real->name ?></td>
-                                    </tr>
-                                <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="col-sm-11 col-md-9 col-lg-7 my-3">
-                            <table class="table bg-light table-hover rounded mb-0">
-                                <thead>
-                                <tr>
-                                    <th colspan="3" class="py-2 text-center text-dark text-uppercase"><font size="3">Acteur<?= ($viewData['tv']->created_by > 1) ? "s" : "" ?></font>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                foreach ($viewData['generator']['casts'] as $actor) { ?>
-                                    <tr class="py-2">
-                                        <td class="py-2 text-center text-dark"><?= $actor['name'] ?></td>
-                                    </tr>
-                                <?php } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="row bg-light justify-content-center py-5">
-                        <div class="col-12 text-center">
-                            <h1 class="font-weight-light text-dark mb-3 text-uppercase"><font size="5">Détails
-                                    Techniques</font></h1>
-                        </div>
-
-                        <div class="row mb-2 pt-4 w-75">
-                            <div class="col-md-4 my-3">
-                                <h2 class="mb-3">Vidéo</h2>
-                                <ul class="list-group pl-0">
-                                    <li class="list-group-item bg-dark text-light p-2">WEBRip 1080p</li>
-                                    <li class="list-group-item bg-dark text-light p-2">HEVC/x264</li>
-                                    <li class="list-group-item bg-dark text-light p-2">2148 kbps</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-4 my-3">
-                                <h2 class="mb-3">Audio</h2>
-                                <ul class="list-group pl-0">
-                                    <li class="list-group-item bg-dark text-light p-2"><img
-                                                src="https://flagcdn.com/20x15/fr.png" alt="fr_FR.png"> Français (VFF) à
-                                        640 kbps
-                                    </li>
-                                    <li class="list-group-item bg-dark text-light p-2"><img
-                                                src="https://flagcdn.com/20x15/us.png" alt="en_US.png"> Anglais (VO) à
-                                        211 kbps
-                                    </li>
-                                    <li class="list-group-item bg-dark text-light p-2">EAC3 | 5.1</li>
-                                </ul>
-                            </div>
-                            <div class="col-md-4 my-3">
-                                <h2 class="mb-3">Sous-titres</h2>
-                                <ul class="list-group pl-0">
-                                    <li class="list-group-item bg-dark text-light p-2"><img
-                                                src="https://flagcdn.com/20x15/fr.png" alt="fr_FR.png"> Français
-                                        (forcés, complets)
-                                    </li>
-                                    <li class="list-group-item bg-dark text-light p-2"><img
-                                                src="https://flagcdn.com/20x15/us.png" alt="en_US.png"> Anglais
-                                        (complets)
-                                    </li>
-                                    <li class="list-group-item bg-dark text-light p-2">TXT/SRT</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row bg-dark justify-content-center align-items-center py-5">
-                        <div class="col-12 text-center">
-                            <h1 class="font-weight-light text-light mb-3 text-uppercase"><font size="5">Détails
-                                    Torrent</font></h1>
-                        </div>
-                        <div class="row mt-3 mb-1 text-center">
-                            <div class="alert alert-light p-2 mx-auto mb-0 text-dark"><b>Débit global :</b> 2000 kbps
-                            </div>
-                            <div class="mt-3 w-100">
-                                <font size="2">
-                                    <b class="text-light">Source :</b> <span class="text-warning">NF.HEPHE</span><br>
-                                    <b class="text-light">Nombre de Fichiers :</b> <span
-                                            class="badge badge-success align-middle">1</span><br>
-                                    <b class="text-light">Poids total du torrent : <span
-                                                class="text-danger">2,00 Go</span></b>
-                                </font>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php include __DIR__ . './../snippets/render-tv.tpl.php' ?>
         </div>
     </div>
 </section>

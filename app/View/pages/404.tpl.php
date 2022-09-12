@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <?php require_once __DIR__ . './../global/head.tpl.php' ?>
-    <title>RapidPlace - Oops, 404 !</title>
+    <title>RapidPlace</title>
 </head>
 <body>
     <?php require_once __DIR__ . './../global/nav.tpl.php' ?>

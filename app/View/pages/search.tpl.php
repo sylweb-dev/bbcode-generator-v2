@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <?php require_once __DIR__ . './../global/head.tpl.php' ?>
-    <title>RapidPlace - Accueil</title>
+    <title>RapidPlace - Recherche de "<?= $viewData['data_url']['search'] ?? "" ?>"</title>
 </head>
 <body>
 <?php require_once __DIR__ . './../global/nav.tpl.php' ?>
@@ -83,37 +83,12 @@
                                 <a class="page-link" href="<?= $a->$c->prev->url ?? "" ?>">&laquo;</a>
                             </li>
                             <?php
-                            $counter = $c;
-                            $for_cursor = 0;
-                            $count = 0;
-                            if ($for_cursor >= $c) {
-                                ?>
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#">. . .</a>
-                                </li>
-                                <?php
-                            }
                             foreach ($viewData['pagination']['pages'] as $page) {
-                                $for_cursor++;
-                                if ($for_cursor >= $counter) {
-                                    $count++;
-                                    ?>
-                                    <li class="page-item <?= $page->current ? "active" : "" ?>">
-                                        <a class="page-link" href="<?= $page->url ?>"><?= $page->page ?></a>
-                                    </li>
-                                <?php }
-                                if($count >= 10) break;
-                            }
-                            if ($c <= 50) {
                                 ?>
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#">. . .</a>
+                                <li class="page-item <?= $page->current ? "active" : "" ?>">
+                                    <a class="page-link" href="<?= $page->url ?>"><?= $page->page ?></a>
                                 </li>
-                                <?php
-                            }
-
-
-                            ?>
+                            <?php } ?>
                             <li class="page-item <?= $a->$c->next ? "" : "disabled" ?>">
                                 <a class="page-link" href="<?= $a->$c->next->url ?? "" ?>">&raquo;</a>
                             </li>
