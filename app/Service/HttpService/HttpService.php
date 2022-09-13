@@ -40,7 +40,7 @@ class HttpService
 
         $req = $this->client->request(
             'GET',
-            self::API_URL . "search/{$type}?api_key={$this->api_key}&language=fr-FR&query={$toSearch}&page={$page}&include_adult=false",
+            self::API_URL . "search/{$type}?api_key={$this->api_key}&language=fr-FR&query={$toSearch}&page={$page}&include_adult=true",
             []
         );
 
