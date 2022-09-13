@@ -76,7 +76,7 @@ class MainController extends CoreController {
                 "casts" => array_slice($cast, 0, 4),
                 "release" => $release_date,
                 "countries" => $countryResult,
-                "run_time" => $cs->timeToString($data->episode_run_time[0]),
+                "run_time" => $cs->timeToString($data->episode_run_time[0] ?? "0"),
                 "type" => "tv"
             ];
 
