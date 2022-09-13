@@ -25,7 +25,7 @@
 
                     <font size="4"
                           class="d-flex align-items-center justify-content-center p-1 pl-2 mb-3 bg-white border-dark rounded">
-                        <?php if (isset($viewData['rendered']->other_season)) echo '<span class="badge badge-info">' . $viewData['rendered']->quality . '</span>'; ?>
+                        <?php if (isset($viewData['rendered']->quality)) echo '<span class="badge badge-info">' . $viewData['rendered']->quality . '</span>'; ?>
                         <span class="badge badge-success mx-1">x264</span>
                         <img class="mx-auto d-none d-sm-inline-block"
                              src="<?= $viewData['generator']['rating']['image'] ?>"
