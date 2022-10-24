@@ -5,6 +5,7 @@
         "vlucas/phpdotenv": "^5.4",
         "symfony/http-client": "^6.0",
         "wyrihaximus/html-compress": "^4.2",
-        "zaininnari/html-minifier": "^0.4.2"
+        "zaininnari/html-minifier": "^0.4.2",
+        "twig/twig": "^3.4"
     }
 }

@@ -5,7 +5,7 @@
     use WyriHaximus\HtmlCompress\Factory;
 
     require_once __DIR__ . './../global/head.tpl.php' ?>
-    <title>RapidPlace - <?= $viewData['tv']->name ?></title>
+    <title>Vagerof Prez - <?= $viewData['tv']->name ?></title>
 </head>
 <body>
 <?php require_once __DIR__ . './../global/nav.tpl.php' ?>
